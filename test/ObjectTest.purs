@@ -5,7 +5,7 @@ module ObjectTest (
 import Prelude
 import TestHelpers
 import Test.Phantomjs
-import qualified  Test.Phantomjs.Object as Phantom
+import Test.Phantomjs.Object as Phantom
 import Data.Array
 import Data.Maybe
 

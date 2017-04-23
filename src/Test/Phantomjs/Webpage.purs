@@ -27,25 +27,27 @@ module Test.Phantomjs.Webpage (
 
 import Prelude
 
-import Data.Function
+import Data.Function.Uncurried (runFn2, Fn2, runFn5, Fn5)
 
+import Data.Int (toNumber)
+import Data.Time.Duration
 import Control.Alt
 import Control.Monad.Eff.Exception
 import Control.Monad.Eff
 import Control.Monad.Aff
+import Control.Parallel
 import Control.Monad.Aff.AVar
-import Control.Monad.Aff.Par
 import Control.Monad.Error.Class
 import Test.Phantomjs
 
 -- | Represents a NON-closure procedure that will be run in the
 -- | browser environment.
 -- |
-foreign import data BrowserProc :: * -> *
+foreign import data BrowserProc :: Type -> Type
 
 -- | An instance of Phantom's `webpage`.
 -- |
-foreign import data Page :: *
+foreign import data Page :: Type
 
 -- | Rectangular area of the web page to be rasterized when rendered.
 -- |
@@ -168,12 +170,12 @@ foreign import _open
 openWithTimeout ::
   forall e. Page -> String -> Timeout -> Aff ( avar :: AVAR
                                              , phantomjs :: PHANTOMJS | e) Unit
-openWithTimeout page url timeout =
-  runPar $
-  (Par $ pure unit) <|>
-  (Par $ later' timeout (throwError $ timeoutError timeout))
+openWithTimeout page _ timeout =
+  sequential $ const
+  <$> parallel (pure unit)
+  <*> parallel (delay (Milliseconds $ toNumber timeout) *> (throwError $ timeoutError timeout)) 
   where
-    timeoutError timeout = error $ "Timed out after " ++ show timeout ++ " seconds"
+    timeoutError timeout = error $ "Timed out after " <> show timeout <> " seconds"
 
 foreign import plainText
   :: forall e.

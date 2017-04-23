@@ -1,8 +1,7 @@
 module Test.BrowserProcs where
 
 import Prelude
-import Test.Phantomjs
-import Test.Phantomjs.Webpage
+import Test.Phantomjs.Webpage (BrowserProc)
 
 foreign import docTitle
   :: BrowserProc String

@@ -57,7 +57,7 @@ setPaperSize
   :: forall e.
      Page
   -> PaperSize
-  -> Eff (phantomjs :: PHANTOMJS) Unit
+  -> Eff (phantomjs :: PHANTOMJS | e) Unit
 setPaperSize page (PaperSize (PaperDimensions format orientation) (Margin t l b r))
   = _setPaperSize page { format: show format
                        , orientation: show orientation
@@ -67,6 +67,15 @@ setPaperSize page (PaperSize (PaperDimensions format orientation) (Margin t l b 
                                  , right: lengthToNumber r
                                  }
                        }
+setPaperSize page (PaperSize (PaperDimensionsLxW h w) (Margin t l b r))
+ = _setPaperSizeLW page { width: lengthToNumber w
+                        , height: lengthToNumber h
+                        , margin: { top: lengthToNumber t
+                                  , left: lengthToNumber l
+                                  , bottom: lengthToNumber b
+                                  , right: lengthToNumber r
+                                  }
+                        }
 
 foreign import _setPaperSize
   :: forall e.
@@ -79,7 +88,20 @@ foreign import _setPaperSize
                , right :: Number
                }
      }
-  -> Eff (phantomjs :: PHANTOMJS) Unit
+  -> Eff (phantomjs :: PHANTOMJS | e) Unit
+
+foreign import _setPaperSizeLW
+  :: forall e.
+     Page
+  -> { width :: Number
+     , height :: Number
+     , margin :: { top :: Number
+                 , left :: Number
+                 , bottom :: Number
+                 , right :: Number
+                 }
+     }
+  -> Eff (phantomjs :: PHANTOMJS | e) Unit
 
 
 instance showFormat :: Show Format where

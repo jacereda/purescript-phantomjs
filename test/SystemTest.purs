@@ -5,11 +5,11 @@ module SystemTest (
 import Prelude
 import TestHelpers
 import Test.Phantomjs
-import qualified Test.Phantomjs.System as System
+import Test.Phantomjs.System as System
 import Control.Monad.Aff.Console
-import qualified Data.StrMap as M
-import qualified Data.List as L
-import qualified Data.Tuple as T
+import Data.StrMap as M
+import Data.List as L
+import Data.Tuple as T
 
 
 main = phantomSpec do
@@ -22,13 +22,13 @@ systemTest = do
       typeTest "system args" args ["out.js"]
     "env" #>: do
       env <- liftEff $ System.env
-      typeTest "system env" env (M.fromList $
+      typeTest "system env" env (M.fromFoldable $
         T.Tuple "foo" "bar" L.:
         T.Tuple "baz" "qux" L.:
         L.Nil)
     "os" #>: do
       os <- liftEff $ System.os
-      typeTest "system os" os (M.fromList $
+      typeTest "system os" os (M.fromFoldable $
         T.Tuple "foo" "bar" L.:
         T.Tuple "baz" "qux" L.:
         L.Nil)

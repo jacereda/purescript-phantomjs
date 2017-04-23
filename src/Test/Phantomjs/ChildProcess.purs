@@ -8,7 +8,7 @@ module Test.Phantomjs.ChildProcess (
 import Control.Monad.Eff
 import Test.Phantomjs
 
-foreign import data ChildProcess :: *
+foreign import data ChildProcess :: Type
 
 type Command = String
 type Arg = String

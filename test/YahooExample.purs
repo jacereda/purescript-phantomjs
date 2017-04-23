@@ -28,13 +28,13 @@ main = do
   let outfile = "screenshot.jpg"
   let timeout = 5000
   maybe
-    ((print $ error "No url given") *> exit 0)
-    (\url -> (runAff
-              (print >=> const (exit 1))
-              ((const (log $ "Screenshot of " ++
-                       url ++
-                       " saved to " ++
-                       outfile ++
+    ((logShow $ error "No url given") *> exit 0)
+    (\url -> void (runAff
+              (logShow >=> const (exit 1))
+              ((const (log $ "Screenshot of " <>
+                       url <>
+                       " saved to " <>
+                       outfile <>
                        ".")) >=> const (exit 0))
               (open page url *>
                (liftEff $ log "Successfully connected.") *>
@@ -52,4 +52,4 @@ logDocumentTitle ::
   forall e. Page -> Eff (phantomjs :: PHANTOMJS, console :: CONSOLE | e) Unit
 logDocumentTitle page = do
   browser_docTitle <- evaluate0 page docTitle
-  log $ "Taking screenshot of " ++ browser_docTitle ++ "..."
+  log $ "Taking screenshot of " <> browser_docTitle <> "..."

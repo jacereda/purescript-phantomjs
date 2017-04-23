@@ -27,3 +27,11 @@ exports._setPaperSize = function (page) {
     }
   }
 }
+
+exports._setPaperSizeLW = function (page) {
+  return function (opts) {
+    return function () {
+      return page.paperSize = opts
+    }
+  }
+}

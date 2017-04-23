@@ -5,9 +5,9 @@ module WebpageTest (
 import Prelude
 import TestHelpers
 import Test.Phantomjs
-import qualified Test.Phantomjs.Webpage as W
-import qualified Test.Phantomjs.Webpage.PaperSizeUtil as W
-import Control.Monad.Aff.Console
+import Test.Phantomjs.Webpage as W
+import Test.Phantomjs.Webpage.PaperSizeUtil as WP
+--import Control.Monad.Aff.Console
 import Control.Monad.Eff.Class
 import Math (abs)
 
@@ -45,7 +45,7 @@ webpageTest = do
     size <- liftEff $ W.getZoomFactor page
     test "get and set zoomFactor" $ abs (size - 0.10) < 0.000001
 
-    liftEff $ W.setPaperSize page $ W.PaperSize (W.PaperDimensions W.A4 W.Portrait) W.noMargin
+    liftEff $ WP.setPaperSize page $ WP.PaperSize (WP.PaperDimensions WP.A4 WP.Portrait) WP.noMargin
     test "set paperSize" $ true
 
 
@@ -56,8 +56,7 @@ This domain is established to be used for illustrative examples in documents. Yo
 More information...
 """
 
-exampleHtml =
-"""<!DOCTYPE html><html><head>
+exampleHtml = """<!DOCTYPE html><html><head>
     <title>Example Domain</title>
 
     <meta charset="utf-8">
