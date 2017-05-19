@@ -26,19 +26,17 @@ module Test.Phantomjs.Webpage (
 ) where
 
 import Prelude
-
-import Data.Function.Uncurried (runFn2, Fn2, runFn5, Fn5)
-
-import Data.Int (toNumber)
 import Data.Time.Duration
 import Control.Alt
 import Control.Monad.Eff.Exception
 import Control.Monad.Eff
 import Control.Monad.Aff
-import Control.Parallel
 import Control.Monad.Aff.AVar
 import Control.Monad.Error.Class
 import Test.Phantomjs
+import Control.Parallel (parallel, sequential)
+import Data.Function.Uncurried (runFn2, Fn2, runFn5, Fn5)
+import Data.Int (toNumber)
 
 -- | Represents a NON-closure procedure that will be run in the
 -- | browser environment.
